@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Acessar Planilha Google Sheets</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 40px; }
+    table { margin: 20px auto; border-collapse: collapse; }
+    th, td { border: 1px solid #ccc; padding: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Leitura de Planilha Google Sheets</h1>
+  <button onclick="carregarDados()">Carregar Dados</button>
+  <div id="tabela"></div>
+
+  <script>
+    // COLE AQUI A URL DO SEU SCRIPT WEB
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwTo9UODxr3G35I_oHLNuVJUi9RKHfwWzQPluEp7aJ41d5ve5CbKMFByzfSgNmd3MgB/exec";
+
+    async function carregarDados() {
+      try {
+        // Faz uma requisição HTTP para o Apps Script
+        const resposta = await fetch(scriptURL);
+        const dados = await resposta.json();
+
+        // Monta uma tabela HTML com os dados recebidos
+        let html = "<table>";
+        dados.forEach((linha, i) => {
+          html += "<tr>";
+          linha.forEach(celula => {
+            html += i === 0 ? `<th>${celula}</th>` : `<td>${celula}</td>`;
+          });
+          html += "</tr>";
+        });
+        html += "</table>";
+
+        // Exibe a tabela na página
+        document.getElementById("tabela").innerHTML = html;
+
+      } catch (erro) {
+        console.error("Erro ao acessar a planilha:", erro);
+      }
+    }
+  </script>
+</body>
+</html>
